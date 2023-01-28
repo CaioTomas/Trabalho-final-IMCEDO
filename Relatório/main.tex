@@ -1,0 +1,197 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% writeLaTeX Example: Academic Paper Template
+%
+% Source: http://www.writelatex.com
+% 
+% Feel free to distribute this example, but please keep the referral
+% to writelatex.com
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[twocolumn,showpacs,%
+  nofootinbib,aps,superscriptaddress,%
+  eqsecnum,prd,notitlepage,showkeys,10pt]{revtex4-1}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{dcolumn}
+\usepackage{xcolor}
+\usepackage[pdfstartview=FitH,
+            colorlinks,
+            bookmarksnumbered,
+            bookmarksopen,
+            linktocpage,
+            urlcolor=blue,
+            linkcolor=cyan,
+            citecolor=red!70!black]{hyperref}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=[90]Fortran,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+\usepackage[nottoc,numbib]{tocbibind}
+
+\usepackage[cmintegrals,cmbraces]{newtxmath}
+\usepackage{ebgaramond-maths}
+
+\makeatletter
+  \DeclareSymbolFont{ntxletters}{OML}{ntxmi}{m}{it}
+  \SetSymbolFont{ntxletters}{bold}{OML}{ntxmi}{b}{it}
+  \re@DeclareMathSymbol{\leftharpoonup}{\mathrel}{ntxletters}{"28}
+  \re@DeclareMathSymbol{\leftharpoondown}{\mathrel}{ntxletters}{"29}
+  \re@DeclareMathSymbol{\rightharpoonup}{\mathrel}{ntxletters}{"2A}
+  \re@DeclareMathSymbol{\rightharpoondown}{\mathrel}{ntxletters}{"2B}
+  \re@DeclareMathSymbol{\triangleleft}{\mathbin}{ntxletters}{"2F}
+  \re@DeclareMathSymbol{\triangleright}{\mathbin}{ntxletters}{"2E}
+  \re@DeclareMathSymbol{\partial}{\mathord}{ntxletters}{"40}
+  \re@DeclareMathSymbol{\flat}{\mathord}{ntxletters}{"5B}
+  \re@DeclareMathSymbol{\natural}{\mathord}{ntxletters}{"5C}
+  \re@DeclareMathSymbol{\star}{\mathbin}{ntxletters}{"3F}
+  \re@DeclareMathSymbol{\smile}{\mathrel}{ntxletters}{"5E}
+  \re@DeclareMathSymbol{\frown}{\mathrel}{ntxletters}{"5F}
+  \re@DeclareMathSymbol{\sharp}{\mathord}{ntxletters}{"5D}
+  \re@DeclareMathAccent{\vec}{\mathord}{ntxletters}{"7E}
+\makeatother
+
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+
+\begin{document}
+
+\title{
+Problemas de Sturm-Liouville \\
+Uma abordagem numérica
+}
+\author{Caio Tomás de Paula}
+\affiliation{Departamento de Matemática, Universidade de Brasília, Brasil.}
+
+\begin{abstract}
+    Relatório entregue como parte da avaliação do curso de Introdução a
+    Métodos Computacionais em Equações Diferenciais Ordinárias (IMCEDO),
+    ministrado pelo prof. Dr. Yuri Dumaresq Sobral no segundo semestre letivo
+    de 2022 da Universidade de Brasília.
+\end{abstract}
+
+\maketitle
+
+\section{Introdução}
+
+explicar o que é o problema, de onde ele vem, porque é importante...
+
+mostrar a forma geral do problema (pegar a eq de Helmholtz, talvez?)
+
+dar exemplos de problemas regulares e irregulares que aparecem em MMF1
+
+Usamos \cite{Sturm-Liouville} como referência principal para o trabalho, além
+das notas de aula \cite{notas-aula-IMCEDO}.
+
+\section{Resultados}
+\label{sec:resultados}
+
+\subsection{O método numérico}
+
+Ideia do método: transformar o problema de SL, que é um PVC, em um PVI
+de modo que resolver o PVC é encontrar a solução do PVI e os zeros da solução
+do PVI.
+
+Teo. 186 - 188 (p.304-305): 
+garantem que podemos usar a bisseção e NR para encontrar os zeros, i.e.,
+os autovalores e as autofunções (com convergência uniforme neste último caso) do problema de SL regular
+
+Além do problema de SL regular, temos duas categorias de problema de
+SL singular (as duas aparecem, por exemplo, ao resolver a equação
+de Laplace no disco -- \textcolor{red}{conferir essa info})
+
+Teo. 190 - 192 (p.319-321):
+garantem que podemos usar a bisseção e NR para encontrar os zeros, i.e.,
+os autovalores e as autofunções (com convergência uniforme neste último caso) do problema de SL singular do primeiro tipo
+
+Teo. 194 - 196 (p.337-339):
+garantem que podemos usar a bisseção e NR para encontrar os zeros, i.e.,
+os autovalores e as autofunções (com convergência uniforme neste último caso) do problema de SL singular do segundo tipo
+
+A aplicação do método para problemas de S-L difere um pouco da aplicação ``tradicional'':
+para os problemas de S-L, a cada passo precisamos
+%
+\begin{enumerate}
+    \item propor uma estimativa $\lambda_n^i$ para o autovalor $\lambda_n$; 
+    \item resolver o PVI em $u(x, \lambda_n^i)$ dado pelo problema de S-L quando substituímos a condição de
+    contorno em 1 pela condição inicial $u'(0) = 1$;
+    \item avaliar o quão longe de $0$ está $u(1,\lambda_n^i)$:
+    %
+    \begin{enumerate}
+        \item se muito longe, usamos um método iterativo para obter um próximo chute $\lambda_n^{i+1}$
+        e repetimos o processo;
+        \item se perto o bastante, paramos.
+    \end{enumerate}
+    %
+\end{enumerate}
+%
+
+%
+\subsection{Validação do método}\label{subsec:validacao}
+%
+
+
+
+%
+\subsection{Aplicando o método}\label{subsec:aplicacao}
+%
+
+
+
+%
+\subsection{Conclusão}\label{subsec:conclusao}
+%
+
+% \lstinputlisting[language=Fortran, caption=Teste]{teste_programa.f90}
+
+\begin{acknowledgments}
+
+We thank\dots
+
+\end{acknowledgments}
+
+% \newpage
+% \nocite{*}
+% \bibliographystyle{apalike}
+\bibliographystyle{siam}
+\bibliography{referencias}
+
+\end{document}
