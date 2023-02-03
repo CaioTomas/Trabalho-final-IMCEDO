@@ -76,6 +76,10 @@
   tabsize=4
 }
 
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{physics}
 
@@ -130,7 +134,7 @@ uma abordagem numérica usando o método do tiro
     ministrado pelo prof. Dr. Yuri Dumaresq Sobral no segundo semestre letivo
     de 2022 da Universidade de Brasília. Foi utilizada 
     \cite{Sturm-Liouville} como referência principal para o trabalho, além
-    das notas de aula \cite{notas-aula-IMCEDO}.
+    das notas de aula \cite{notas-aula-IMCEDO} e do livro \cite{iserles2008}.
 \end{abstract}
 %
 \maketitle
@@ -187,9 +191,6 @@ Ademais, para implementarmos o método do tiro vamos requerer que
     \item[(iv)] $p, q, r\in C^2([a,b])$.
 \end{itemize}
 %
-
-dar exemplos de problemas regulares e irregulares que aparecem em MMF1
-
 Em várias dimensões, o problema de autovalor assume a forma da
 \textbf{equação de Helmholtz}, dada por
 %
@@ -217,7 +218,8 @@ O principal resultado da teoria de Sturm-Liouville afirma que
     $n-1$ zeros em $(a,b)$, chamada \textbf{$n$-ésima solução fundamental}.
 
     \item as autofunções (normalizadas) formam uma base ortonormal com
-    respeito ao produto interno de peso $r$, i.e.,
+    respeito ao produto interno de peso $r$\footnote{A rigor, é necessário também que
+    $y_n$ e $y_m$ seja quadrado-integráveis em $[a,b]$ com respeito a $r$.},i.e.,
     %
     \[
         \left\langle y_n, y_m \right\rangle
@@ -295,7 +297,7 @@ Pela simplicidade dos autovalores e unicidade das autofunções,
 segue que a única autofunção (normalizada) associada a cada autovalor é tal que
 %
 \[
-    y(a) = -\beta/\sqrt{\alpha^2 + \beta^2}, \,
+    y(a) = -\beta/\sqrt{\alpha^2 + \beta^2}, \quad
     y'(a) = \alpha/\sqrt{\alpha^2 + \beta^2}.
 \]
 %
@@ -334,33 +336,64 @@ podemos usar os métodos da bisseção e de Newton-Raphson para encontrar os aut
 em problemas de Sturm-Liouville regulares\footnote{Os mesmos resultados valem, com as devidas
 alterações nas demonstrações, para problemas de Sturm-Liouville singulares.}.
 
+Utilizamos o método de Runge-Kutta explícito de 4ª ordem clássico (RKE$4$) dado pela
+tabela \ref{tab:RKE4} para resolver os PVIs e um método da bisseção para
+avançar nas estimativas para os autovalores.
+%
+\begin{table}[H]
+    \centering
+    \caption{Tabela de Butcher do método de RK utilizado}
+    \begin{tabular}{c|cccc}
+        0 &  &  &  &  \\
+        1/2 & 1/2 &  &  &  \\
+        1/2 & 0 & 1/2 &  &  \\
+        1 & 0 & 0 & 1 &  \\
+        \hline
+         & 1/6 & 1/3 & 1/3 & 1/6
+    \end{tabular}
+    \label{tab:RKE4}
+\end{table}
+%
+A Figura \ref{fig:flux-codigo} ilustra, diagramaticamente, a maneira como
+a lógica do código utilizado foi construída.
+%
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[node distance = 2cm]
-        \node [terminator, fill=blue!20] (start) {\textbf{Inicialização variáveis}};
-        % \node [process, fill=blue!20] at (0,-1.5) (PVI1) 
-        % {Resolver o PVI \eqref{eq:PVI-geral-tiro} para $\lambda = a$};
+        \node [terminator, fill=blue!20] (start) {\textbf{Inicialização das variáveis}};
+        
         \node [process, fill=blue!20] at (0,-1.5) (PVI2) 
         {Resolver o PVI \eqref{eq:PVI-geral-tiro} para $\lambda = \lambda_n^i$};
+        
         \node [decision, fill=blue!20, below of = PVI2] (decision) {$F(\lambda_n^i) < \mathrm{TOL}$?};
+        
         \node [process, fill=red!20] at (3.7,-1.5) (chute) 
         {$\lambda_n^i \to \lambda_n^{i+1}$};
+        
         \node [process, fill=green!20] at (0,-6) (encontrado)
         {Autovalor $\lambda_n^*$ encontrado!};
+        
         \node [process, fill=blue!20] at (0,-7.5) (PVIFinal) 
         {Resolver o PVI \eqref{eq:PVI-geral-tiro} para $\lambda = \lambda_n^*$};
+
+        \node [terminator, fill=teal!20] at (-3.7,-4.5) (metodo)
+        {RKE$4$};
+        
         \node [data, fill=blue!20] at (0,-9) (salvamento) 
         {Salvar solução};
+        
         \node [terminator, fill=blue!20] at (0,-10.5) (end) {\textbf{Fim}};
         
-        \node[draw=none] at (2.00, -2.72) (no) {Não};
+        \node[draw=none] at (2.40, -3.25) (no) {Não};
         \node[draw=none] at (0.35, -5.20) (yes) {Sim};
         
         \path [connector] (start) -- (PVI2);
         \path [connector] (PVI2) -- (decision);
-        \path [connector] (decision) -- (chute);
+        \path [connector] (decision) -| (chute);
         \path [connector] (decision) -- (encontrado);
         \path [connector] (chute) -- (PVI2);
+        \path [connector] (metodo) |- (PVI2);
+        \path [connector] (metodo) |- (PVIFinal);
         \path [connector] (encontrado) -- (PVIFinal);
         \path [connector] (PVIFinal) -- (salvamento);
         \path [connector] (salvamento) -- (end);
@@ -373,24 +406,31 @@ alterações nas demonstrações, para problemas de Sturm-Liouville singulares.}
 %
 Para testar e validar o método, resolvemos o problema de Sturm-Liouville
 %
-\[
+\begin{equation}
+\label{eq:firstproblem}
     \left\{
         \begin{array}{l}
             y'' + \lambda y = 0, \, 0 \leq x \leq 1 \\
             y(0) = y(1) = 0,
         \end{array}
     \right.
-\]
+\end{equation}
 %
 cujos autovalores e autofunções podem ser calculados sem dificuldades e são dados por
 %
 \[
-    \lambda_n = n^2\pi^2, \, y_n = \sin(n\pi x).
+    \lambda_n = n^2\pi^2, \quad y_n = \sin(n\pi x).
 \]
 %
 Resolvendo este PVC com chutes iniciais para a bisseção $[a,b] = [n^2\pi^2 -2, n^2\pi^2 + 5]$, 
 encontramos as autofunções da Figura \ref{fig:first-problem}.
-Traçamos as autofunções normalizadas na Figura \ref{fig:first-problem-check}, mostrando
+Traçamos as autofunções normalizadas na Figura \ref{fig:first-problem-check}, isto é,
+%
+\[
+    \frac{\sin(n\pi x)}{n\pi},
+\]
+%
+mostrando
 que o método encontrou corretamente os autovalores e as autofunções.
 %
 \begin{figure*}
@@ -406,6 +446,39 @@ que o método encontrou corretamente os autovalores e as autofunções.
     \end{minipage}
 \end{figure*}
 %
+%
+\subsection{Análise de robustez do método em relação ao chute inicial}\label{subsec:robustez}
+%
+Ainda com o problema \eqref{eq:firstproblem}, foi feita uma análise da robustez do método.
+A tabela \ref{tab:robustez} resume os resultados. Foram feitos alguns palpites de intervalos
+iniciais para início da bisseção e percebe-se que o método divergiu apenas quando o intervalo
+inicial não continha nenhum autovalor em seu interior, como esperado. Colocou-se $\infty$
+para o número de iterações como ilustração dos casos divergentes, com os autovalores encontrados
+em vermelho: o método da bisseção, de fato, convergiu, mas não para o local adequado e, por isso,
+o número de iterações foi colocado como $\infty$, já que o método do tiro não pararia de iterar.
+%
+\begin{table}[H]
+    \centering
+    \caption{Análise da robustez do método do tiro.}
+    \begin{tabular}{cc|cc|c}
+        % \hline
+        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} & \\
+        \hline
+        $a$ & $b$ & $n$ & $\lambda_n$ & \# iterações \\
+        \hline
+        -10000 & 1000 & 3 & 88.826439547119662 & 35 \\
+        -100 & 1000 & 9 & 799.43796582520008 & 28 \\
+        -1 & 2 & --- & \textcolor{red}{2} & $\infty$ \\
+        500 & 30000 & 54 & 28780.159626156092 & 27 \\
+        1 & 3 & --- & \textcolor{red}{3} & $\infty$ \\
+        1 & 10 & 1 & 9.8696044087409973 & 24 \\
+        -1000 & 10 & 1 & 9.8696043915697373 & 35 \\
+        \hline
+    \end{tabular}
+    \label{tab:robustez}
+\end{table}
+%
+
 
 %
 \subsection{Aplicando o método}\label{subsec:aplicacao}
@@ -428,9 +501,10 @@ asdasd
 % \end{acknowledgments}
 
 % \newpage
-% \nocite{*}
+\nocite{*}
 % \bibliographystyle{apalike}
 \bibliographystyle{siam}
+% \bibliographystyle{alpha}
 \bibliography{referencias}
 
 \end{document}
