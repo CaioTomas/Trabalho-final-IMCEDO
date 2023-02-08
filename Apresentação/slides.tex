@@ -1,0 +1,199 @@
+\documentclass[10pt,presentation,shownotes]{beamer}
+\usetheme{Warsaw}
+\usecolortheme{dove}
+
+\beamertemplatenavigationsymbolsempty
+
+\usepackage{beamerthemesplit}
+\usefonttheme{default}
+\setbeamertemplate{caption}[numbered]
+\setbeamercolor{block body example}{bg=green!12}
+% \setbeamertemplate{navigation symbols}{}
+% \setbeamercovered{transparent}
+\setbeamertemplate{theorems}[numbered]
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{mathtools,amsfonts,amssymb,tikz-cd,hyperref,caption,pstricks,setspace,booktabs,hyperref}
+\usepackage{appendixnumberbeamer}
+\usepackage{xcolor}
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+% We use BiBLaTeX for our bibliography.
+% \usepackage[backend=biber,style=alphabetic]{biblatex}
+% \renewcommand*{\nameyeardelim}{\addcomma\addspace}
+
+% \addbibresource{References/ref.bib}
+
+\makeatletter
+\def\th@remark{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=black}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\setbeamertemplate{headline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,left,leftskip=1em]{section in head/foot}%
+    \usebeamerfont{subsection in head/foot}\hspace*{2ex}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,center]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.25ex,dp=1ex,center]{subsection in head/foot}%
+    \usebeamerfont{section in head/foot}\hspace*{1ex}\insertsectionhead\hspace*{1ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,right, rightskip=1em]{section in head/foot}%
+    \usebeamerfont{section in head/foot}\insertsubsectionhead\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\makeatletter
+\setbeamertemplate{frametitle}{
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth%
+    \advance\@tempdima by\beamer@leftmargin%
+    \advance\@tempdima by\beamer@rightmargin%
+    \begin{beamercolorbox}[sep=0.3cm,center,wd=\the\@tempdima]{frametitle}
+        \usebeamerfont{frametitle}%
+        \vbox{}\vskip-1ex%
+        \if@tempswa\else\csname beamer@ftecenter\endcsname\fi%
+        \strut\insertframetitle\strut\par%
+        {%
+            \ifx\insertframesubtitle\@empty%
+            \else%
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+            \fi
+        }%
+        \vskip-1ex%
+        \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+    \end{beamercolorbox}%
+}
+\makeatother
+
+% This code displays an updating ToC at the beginning of every section.
+\AtBeginSection[]
+{
+	\begin{frame}
+	\frametitle{Table of Contents}
+	\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\makeatletter
+\newcommand<>{\insertsubsectiontitle}{\frametitle{\insertsubsection}}
+\let\oldbeamer@checkframetitle\beamer@checkframetitle% Store the \frametitle checking mechanism
+\renewcommand<>{\subsection}{%
+  \gdef\beamer@checkframetitle{% Update \frametitle checking to ...
+    \insertsubsectiontitle% ...insert the section title and...
+    \global\let\beamer@checkframetitle\oldbeamer@checkframetitle% ...revert to it's old definition
+  }% Regular \section stuff follows
+  \alt#1{\@ifnextchar[\beamer@subsection\beamer@@subsection}
+    {\beamer@secgobble}}
+\makeatother
+
+\makeatletter
+\newenvironment<>{proofs}[1][\proofname]{%
+    \par
+    \def\insertproofname{#1\@addpunct{.}}%
+    \usebeamertemplate{proof begin}#2}
+  {\usebeamertemplate{proof end}}
+\makeatother
+
+\title[Problemas de S-L e o método do tiro
+\hspace{0.3cm}\insertframenumber/\inserttotalframenumber
+]
+{Problemas de Sturm-Liouville e o método do tiro}
+\author[Caio Tomás]{Caio Tomás de Paula \\
+Orientador: Yuri Dumaresq Sobral}
+\date[Int. Mét. Comp. em EDOs -- 14/02]{Int. Mét. Comp. em EDOs}
+\institute[MAT -- UnB]{Universidade de Brasília \\ Departamento de Matemática}
+% \titlegraphic{\includegraphics[width=1\textwidth]{Colorida.png}}
+
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+% \usepackage{multimedia}
+% \input{embed_video}
+
+\newcommand{\hiddencell}[2]{\action<#1->{#2}}
+
+\begin{document}
+
+\maketitle
+
+% For every picture that defines or uses external nodes, you'll have to
+% apply the 'remember picture' style. To avoid some typing, we'll apply
+% the style to all pictures.
+\tikzstyle{every picture}+=[remember picture]
+
+% By default all math in TikZ nodes are set in inline mode. Change this to
+% displaystyle so that we don't get small fractions.
+\everymath{\displaystyle}
+%
+
+%
+\begin{frame}{Referências}
+%
+\begin{thebibliography}{10}
+    \bibitem{Modesto2022} 
+    \alert{J.A.C. Modesto, S. Dorbolo, H. Katsuragi, F. Pacheco-Vázquez and Y.D. Sobral}
+    \newblock {\textit{Compression of a granular layer composed of repelling 
+    magnetic particles}}
+    \newblock {\textcolor{lightgray}{\textbf{Granular Matter, 2022. Accepted.}}}
+    
+    \bibitem{force-dipoles}
+    \alert{K.W. Yung, P.B. Landecker and D.D. Villani}
+    \newblock {\textit{An analytic solution for the force between two magnetic dipoles}}
+    \newblock {\textcolor{lightgray}{\textbf{Physical Separation in Science and Engineering, 1998, n. 9, p.39-52}}}
+    
+    \bibitem{torque-dipoles}
+    \alert{K.W. Yung, P.B. Landecker and D.D. Villani}
+    \newblock {\textit{An analytic solution for the torque between two magnetic dipoles}}
+    \newblock {\textcolor{lightgray}{\textbf{Physical Separation in Science and Engineering, 1999, n. 10, p.29-33}}}
+    
+\end{thebibliography}
+%
+\end{frame}
+%
+\begin{frame}{}
+    \centering \Huge
+    Obrigado!
+    \vfill
+    % \includegraphics[height=0.15\textheight,width=0.3\textwidth]{LOGO_ESCURA.png}
+    % \includegraphics[height=0.15\textheight,width=0.3\textwidth]{logo_FNDE.png}
+    \vfill
+    \usebeamerfont{title} Contato: \texttt{caiotomas6@gmail.com}
+\end{frame}
+%
+\end{document}
