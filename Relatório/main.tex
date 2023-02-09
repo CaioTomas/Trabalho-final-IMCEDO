@@ -388,16 +388,16 @@ Essencialmente, o algoritmo é:
 \begin{enumerate}
     \item propor uma estimativa $\lambda_n^i$ para o autovalor $\lambda_n$; 
     \item resolver o PVI em $u(x, \lambda_n^i)$ dado por \eqref{eq:PVI-geral-tiro};
-    \item avaliar o quão longe de $0$ está $F(\lambda)$:
+    \item avaliar o quão longe de $0$ está $F(\lambda_n^i)$:
     %
     \begin{enumerate}
         \item se muito longe, usamos um método iterativo para obter um próximo 
         chute $\lambda_n^{i+1}$ e voltamos ao passo 1;
         \item se perto o bastante, paramos: o autovalor foi encontrado;
-        \item encontrado o autovalor, resolvemos o PVI \eqref{eq:PVI-geral-tiro} uma
-        última vez para determinar a autofunção associada.
     \end{enumerate}
     %
+    \item encontrado o autovalor, resolvemos o PVI \eqref{eq:PVI-geral-tiro} uma
+    última vez para determinar a autofunção associada.
 \end{enumerate}
 %
 É possível mostrar (cf. \cite[p.~304-305, Teo.~186 - 188]{Sturm-Liouville}) que
@@ -591,17 +591,17 @@ na Tabela \ref{tab:secondproblem} e na Figura \ref{fig:second-problem}.
 \begin{table}[H]
     \centering
     \caption{Intervalos iniciais e autovalores encontrados para o PVC \eqref{eq:secondproblem}.}
-    \begin{tabular}{cc|cc}
+    \begin{tabular}{cc|cc|c}
         % \hline
-        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} \\
+        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} & \\
         \hline
-        $a$ & $b$ & $n$ & $\lambda_n$ \\
+        $a$ & $b$ & $n$ & $\lambda_n$ & \# iterações \\
         \hline
-        $0$ & $15$ & $1$ & $13.575978591106832$ \\
-        $25$ & $60$ & $2$ & $49.200691955629736$ \\
-        $70$ & $120$ & $3$ & $108.32595458952710$ \\
-        $180$ & $240$ & $4$ & $191.05031406506896$ \\
-        $200$ & $350$ & $5$ & $297.39334740152117$ \\
+        $0$ & $15$ & $1$ & $13.57597859$ & $31$ \\
+        $25$ & $60$ & $2$ & $49.200691955629736$ & $31$ \\
+        $70$ & $120$ & $3$ & $108.32595458952710$ & $32$ \\
+        $180$ & $240$ & $4$ & $191.05031406506896$ & $30$ \\
+        $200$ & $350$ & $5$ & $297.39334740152117$ & $34$ \\
         \hline
     \end{tabular}
     \label{tab:secondproblem}
@@ -709,17 +709,17 @@ as autofunções na Figura \ref{fig:singproblem}.
 \begin{table}[H]
     \centering
     \caption{Intervalos iniciais e autovalores encontrados para o PVC \eqref{eq:singproblem}.}
-    \begin{tabular}{cc|cc}
+    \begin{tabular}{cc|cc|c}
         % \hline
-        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} \\
+        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} & \\
         \hline
-        $a$ & $b$ & $n$ & $\lambda_n$ \\
+        $a$ & $b$ & $n$ & $\lambda_n$ & \# iterações \\
         \hline
-        $1$ & $12$ & $1$ & $1.5769950870890170$ \\
-        $10$ & $25$ & $2$ & $16.642215733882040$ \\
-        $47$ & $67$ & $3$ & $51.205829855054617$ \\
-        $87$ & $125$ & $4$ & $105.49412574432790$ \\
-        $150$ & $200$ & $5$ & $179.51907205861062$ \\
+        $1$ & $12$ & $1$ & $1.5769950870890170$ & $32$ \\
+        $10$ & $25$ & $2$ & $16.642215733882040$ & $31$ \\
+        $47$ & $67$ & $3$ & $51.205829855054617$ & $30$ \\
+        $87$ & $125$ & $4$ & $105.49412574432790$ & $30$ \\
+        $150$ & $200$ & $5$ & $179.51907205861062$ & $31$ \\
         \hline
     \end{tabular}
     \label{tab:singproblem}
@@ -761,17 +761,17 @@ e na Figura \ref{fig:cordaproblem}.
 \begin{table}[H]
     \centering
     \caption{Intervalos iniciais e autovalores encontrados para o PVC \eqref{eq:cordaproblem}.}
-    \begin{tabular}{cc|cc}
+    \begin{tabular}{cc|cc|c}
         % \hline
-        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} \\
+        \multicolumn{2}{c}{Intervalo inicial} & \multicolumn{2}{c}{Autovalor encontrado} & \\
         \hline
-        $a$ & $b$ & $n$ & $\lambda_n$ \\
+        $a$ & $b$ & $n$ & $\lambda_n$ & \# iterações \\
         \hline
-        $1$ & $20$ & $1$ & $14.168845105916262$ \\
-        $50$ & $80$ & $2$ & $74.656355008482933$ \\
-        $150$ & $200$ & $3$ & $183.48639830946922$ \\
-        $200$ & $350$ & $4$ & $340.69997835904360$ \\
-        $350$ & $800$ & $5$ & $546.32480936124921$ \\
+        $1$ & $20$ & $1$ & $14.168845105916262$ & $28$ \\
+        $50$ & $80$ & $2$ & $74.656355008482933$ & $27$ \\
+        $150$ & $200$ & $3$ & $183.48639830946922$ & $26$ \\
+        $200$ & $350$ & $4$ & $340.69997835904360$ & $28$ \\
+        $350$ & $800$ & $5$ & $546.32480936124921$ & $29$ \\
         \hline
     \end{tabular}
     \label{tab:cordaproblem}
@@ -970,6 +970,7 @@ que nada mais é do que \eqref{eq:cordaproblem}.
 %
 \section{Códigos utilizados}
 %
-Os códigos escritos para este projeto podem ser encontrados \href{}{neste link}
+Os códigos escritos para este projeto podem ser encontrados 
+\href{https://github.com/CaioTomas/Trabalho-final----IMCEDO}{neste link}.
 
 \end{document}
