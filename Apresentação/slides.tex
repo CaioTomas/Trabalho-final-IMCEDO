@@ -340,8 +340,8 @@ Professor: Yuri Dumaresq Sobral}
         
         % \node [terminator, fill=blue!20] at (0,-10.5) (end) {\textbf{Fim}};
         
-        \node[draw=none] at (2.40, -4.25) (no) {Não};
-        \node[draw=none] at (0.35, -6.70) (yes) {Sim};
+        \node[draw=none] at (3.20, -4.25) (no) {Não};
+        \node[draw=none] at (0.40, -6.60) (yes) {Sim};
         
         % \path [connector] (start) -- (PVI2);
         \path [connector] (PVI2) -- (decision);
@@ -500,8 +500,8 @@ Professor: Yuri Dumaresq Sobral}
         \left\{
             \begin{array}{l}
                 -(p(x)u')' + (q(x) - \lambda r(x))u = 0, \, a \leq x\leq b \\[0.1cm]
-                u(a) = 1, \\[0.1cm]
-                u'(a) = (q(a) - \lambda r(a))/p'(a)
+                u(a) = 1, \text{ (escolha)} \\[0.1cm]
+                \textcolor{teal}{u'(a) = (q(a) - \lambda r(a))/p'(a)} \text{ (lema técnico)}
             \end{array}
         \right.
     \end{equation*}
@@ -681,8 +681,8 @@ Professor: Yuri Dumaresq Sobral}
     \vfill
     % \includegraphics[height=0.15\textheight,width=0.3\textwidth]{LOGO_ESCURA.png}
     \includegraphics[width=0.8\textwidth]{Relatório/Figuras/CordaProblem.pdf}
-    % \vfill
-    % \usebeamerfont{title} Contato: \texttt{caiotomas6@gmail.com}
+    \vfill
+    \usebeamerfont{title} \href{https://github.com/CaioTomas/Trabalho-final-IMCEDO}{Códigos}
 \end{frame}
 %
 \end{document}
