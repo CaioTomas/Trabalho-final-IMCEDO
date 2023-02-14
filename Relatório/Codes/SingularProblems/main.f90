@@ -6,8 +6,8 @@ program main
     k = 0
     flag = 0
 
-    a = 1.d0
-    b = 12.d0
+    a = 150.d0
+    b = 200.d0
 
     do while (flag .eq. 0)
 

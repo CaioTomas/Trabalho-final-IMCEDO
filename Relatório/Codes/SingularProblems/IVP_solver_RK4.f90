@@ -30,7 +30,7 @@ module IVP_solver_RK4
 
             else
 
-                open(unit=1234,file='saida_singproblem_auto1.dat', status='unknown')
+                open(unit=1234,file='saida_singproblem_auto5.dat', status='unknown')
 
                 write (1234,*) 0.d0, sol_u
 
